@@ -31,13 +31,41 @@ int[] GetRandomArray(int length)
 }
 
 //Быстрая сортировка
+int[] FastSortingArray(int[] sortArray, int left, int right)
+{
+	int i = left;
+	int j = right;
 
+	int pivot = sortArray[Random.Shared.Next(left, right)];
+
+	while (i <= j)
+	{
+		while (sortArray[i] < pivot) i++;
+		while (sortArray[j] > pivot) j--;
+		Console.WriteLine($"Опорное значение = {pivot}.");
+		if (i <= j)
+		{
+			Console.WriteLine($"Меняем местами = {sortArray[i]} и {sortArray[j]}");
+			int temp = sortArray[i];
+			sortArray[i] = sortArray[j];
+			sortArray[j] = temp;
+			i++;
+			j--;
+		}
+		PrintArrayToConsole(sortArray);
+		Console.WriteLine("<--- шаг сортировки");
+	}
+	if (i < right) FastSortingArray(sortArray, i, right);
+	if (left < j) FastSortingArray(sortArray, left, j);
+
+	return sortArray;
+}
 
 int size = GetRandomNumber(1, 50);
 int[] oldArray = GetRandomArray(size);
 Console.WriteLine("Изначальный массив:");
 PrintArrayToConsole(oldArray);
 Console.WriteLine();
-int[] fastSortArray = FastSortArray(oldArray);
+int[] fastSortArray = FastSortingArray(oldArray, 0, oldArray.Length - 1);
 Console.WriteLine("Отсортированный массив:");
-PrintArrayToConsole(sortBubleArray);
+PrintArrayToConsole(fastSortArray);
